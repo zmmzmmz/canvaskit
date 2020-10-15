@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+<canvas id="foo" width="300" height="300"></canvas>
+<script src="https://unpkg.com/canvaskit-wasm@0.19.0/bin/canvaskit.js"></script>
+<script>
+  CanvasKitInit({
+    locateFile: (file) => {
+      console.log(file);
+      return 'https://unpkg.com/canvaskit-wasm@0.19.0/bin/'+file;
+    },
+}).then((CanvasKit) => {
+  const surface = CanvasKit.MakeCanvasSurface('foo');
+  console.log(surface);
+  const skcanvas = surface.getCanvas();
+  const font = new CanvasKit.Font(null, 18);
+
+  const fontPaint = new CanvasKit.Paint();
+  fontPaint.setStyle(CanvasKit.PaintStyle.Fill);
+  fontPaint.setAntiAlias(true);
+
+  skcanvas.drawText(`Fetching Font data...`, 5, 1, fontPaint, font);
+  surface.flush();
+  console.log(font);
+});
+</script>
+</body>
+
+</html>
