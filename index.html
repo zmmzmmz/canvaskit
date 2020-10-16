@@ -17,15 +17,23 @@
     },
 }).then((CanvasKit) => {
   const surface = CanvasKit.MakeCanvasSurface('foo');
-  console.log(surface);
+  console.log(CanvasKit, surface);
   const skcanvas = surface.getCanvas();
   const font = new CanvasKit.Font(null, 18);
 
   const fontPaint = new CanvasKit.Paint();
   fontPaint.setStyle(CanvasKit.PaintStyle.Fill);
-  fontPaint.setAntiAlias(true);
+  fontPaint.setAntiAlias(false); // 抗锯齿
 
-  skcanvas.drawText(`Fetching Font data...`, 5, 1, fontPaint, font);
+  console.log(skcanvas);
+  // draw text
+  skcanvas.drawText(`tishi`, 5, 120, fontPaint, font);
+  // draw line
+  const linePaint = new CanvasKit.Paint();
+  linePaint.setStyle(CanvasKit.PaintStyle.Fill);
+  skcanvas.drawLine(12, 10, 90, 10, linePaint);
+
+  // 
   surface.flush();
   console.log(font);
 });
