@@ -4,10 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    .wrapper {
+      display: flex;
+    }
+    .box {
+      height: 300px;
+      width: 300px;
+      background-color:aquamarine;
+      font-size: 18px;
+      position: relative;
+    }
+    .box span {
+      position: absolute;
+      top: 120px;
+      left: 5px;
+    }
+  </style>
 </head>
 
 <body>
-<canvas id="foo" width="300" height="300"></canvas>
+  <div class="wrapper">
+    <canvas id="foo" width="300" height="300"></canvas>
+    <div class="box">
+      <span>tishi</span>
+    </div>
+  </div>
 <script src="https://unpkg.com/canvaskit-wasm@0.19.0/bin/canvaskit.js"></script>
 <script>
   CanvasKitInit({
@@ -17,7 +39,8 @@
     },
 }).then((CanvasKit) => {
   const surface = CanvasKit.MakeCanvasSurface('foo');
-  console.log(CanvasKit, surface);
+  const ocanvas = CanvasKit.MakeCanvas(300, 300);
+  console.log(CanvasKit, surface, ocanvas);
   const skcanvas = surface.getCanvas();
   const font = new CanvasKit.Font(null, 18);
 
@@ -25,7 +48,7 @@
   fontPaint.setStyle(CanvasKit.PaintStyle.Fill);
   fontPaint.setAntiAlias(false); // 抗锯齿
 
-  console.log(skcanvas);
+  console.log(skcanvas, fontPaint);
   // draw text
   skcanvas.drawText(`tishi`, 5, 120, fontPaint, font);
   // draw line
@@ -33,9 +56,13 @@
   linePaint.setStyle(CanvasKit.PaintStyle.Fill);
   skcanvas.drawLine(12, 10, 90, 10, linePaint);
 
-  // 
   surface.flush();
-  console.log(font);
+  const temImage = ocanvas.toDataURL();
+
+  const imageEl = document.createElement('img');
+  imageEl.src = temImage;
+  document.body.appendChild(imageEl);
+  
 });
 </script>
 </body>
